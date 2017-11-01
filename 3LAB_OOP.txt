@@ -1,0 +1,285 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lab3_FINAL
+{
+    partial class Arr
+    {
+        
+        public int Hash { get; private set; }
+        public int[] ARR { get { return arr; } set { } }
+        public int NewElement { get { return newElement; } set { } }
+        public int PositionOfRemove { get; set; }
+
+
+        // Конструкторы
+
+        
+        //private Arr() { countOfObjects++; } Закрытый конструктор
+
+        public Arr() // Конструктор по умолчанию (без параметров)
+        {
+            arr = new int[5] {1, 2, 3, 4, 5};
+            newElement = 8;
+            positionOfRemove = 2;
+            hash = GetHashCode();
+
+            countOfObjects++;
+
+            //Console.WriteLine("It's a common object");
+            //SizeOfArray();
+            //Info();
+        }
+
+        public Arr(int[] arr) // Конструктор с параметрами
+        {
+            this.arr = arr;
+            hash = GetHashCode();
+
+            countOfObjects++;
+
+            //Info();
+        }
+
+        public Arr(int[] arr, int newElement, int positionOfRemove) // БОЛЬШЕ ПАРАМЕТРОВ!!!
+        {
+            this.arr = arr;
+            this.newElement = newElement;
+            this.positionOfRemove = positionOfRemove;
+
+            hash = GetHashCode();
+
+            countOfObjects++;
+
+            //Info();
+            //Add();
+            //SizeOfArray();
+        }
+
+        static Arr() // Статический конструктор
+        {
+            Console.WriteLine("Program was create by " + name);
+            Console.WriteLine("You will create some objects");
+            Console.WriteLine();
+        }
+
+
+        //Методы 
+
+
+        public static void Border()
+        {
+            Console.WriteLine();
+            Console.WriteLine("*******************************************************************************");
+            Console.WriteLine();
+        }
+
+        public void Add()
+        {
+            length = this.arr.Length + 1;
+            Array.Resize<int>(ref arr, length); // Для ref-параметра мы должны передать его уже инициализированным
+            arr[length-1] = this.newElement;
+            Console.WriteLine("New array after added new element: ");
+            for (int i = 0; i<this.arr.Length; i++)
+            {
+                Console.Write(arr[i] + " ");
+            }
+            Console.WriteLine();
+        }
+        
+        public void Remove()
+        {
+            for (int i = positionOfRemove - 1; i<this.arr.Length; i++)
+            {
+                for (int j = i+1; j < this.arr.Length; j++)
+                {
+                    arr[i] = arr[j];
+                    break;
+                }
+            }
+            length = this.arr.Length - 1;
+            Array.Resize<int>(ref arr, length);
+            if (positionOfRemove == 1)
+                Console.WriteLine("You deleted first element");
+            else if (positionOfRemove == 2)
+                Console.WriteLine("You deleted second element");
+            else if (positionOfRemove == 3)
+                Console.WriteLine("You deleted third element");
+            else
+                Console.WriteLine("You deleted " + positionOfRemove + "-th element");
+            for (int i = 0; i < this.arr.Length; i++)
+            {
+                Console.Write(arr[i] + " ");
+            }
+            Console.WriteLine();
+        }
+
+        public void Info()  // Вывод информации об объекте 
+        {
+            Console.Write("Your array is: ");
+            for (int i = 0; i < this.arr.Length; i++)
+            {
+                Console.Write(arr[i] + " ");
+            }
+            Console.WriteLine();
+            //Console.WriteLine("You create " + countOfObjects + " object(s)");
+            //Console.WriteLine("Hash of this object: " + this.hash);
+        }
+
+        public void SizeOfArray()
+        {
+            Console.WriteLine("Now you have " + this.arr.Length + " elements in your array");
+        }
+
+        public static void InfoAboutClass() // Вывод информации о классе
+        {
+            Console.WriteLine("Info about class: ");
+            Console.WriteLine("Type - " + typeof(Arr));
+            Console.WriteLine();
+        }
+
+        public int SummaBlyatZaebalo()
+        {
+            int sum = 0;
+            for (int i = 0; i < this.arr.Length; i++)
+            {
+                sum += this.arr[i];
+            }
+            return sum;
+        }
+
+        public void SearchLoverElements()
+        {
+            int special = 0;
+            Console.Write("This array is: ");
+            for (int i = 0; i<this.arr.Count(); i++)
+            {
+                Console.Write(arr[i] + " ");
+            }
+            Console.WriteLine();
+            for (int i = 0; i < this.arr.Length; i++)
+            {
+                if (arr[i]< 0)
+                {
+                    Console.WriteLine("This array have element lover oun! It's: " + this.arr[i]);
+                    special++;
+                    Console.WriteLine();
+                    break;
+                }
+            }
+            if (special == 0)
+            {
+                Console.WriteLine("This array doesn't have elements lover oun!");
+                Console.WriteLine();
+            }
+        }
+
+
+
+        // Переопределение методов "Айайай"
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            else if (obj.GetType() != this.GetType()) return false;
+            else return true;
+        }
+
+        /*public override string ToString()
+        {
+            int sum;
+            int length = this.arr.Length;
+            Sum(this.arr, out sum);
+            return "Length: " + length;
+        }*/
+    }
+
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            /*Arr first = new Arr();
+            first.PositionOfRemove = 2;
+            first.Remove();
+            first.SizeOfArray();
+            Arr.Border();
+
+            int[] second_a = new int[] {10, 20, 30, 40, 50}; 
+            Arr second = new Arr(second_a);
+            int sumOfArray;
+            second.Sum(second_a, out sumOfArray);
+            Arr.Border();
+
+            int[] third_a = new int[] { 100, 200, 300, 400, 500 };
+            Arr third = new Arr(third_a, 600, 3);
+            third.Remove();
+            //third.Add(); Можно вызывать метод и так, но тогда нужно убрать его из конструктора
+            Arr.Border();
+
+            Console.WriteLine(Equals(third, second));
+
+            Console.WriteLine(third.ToString());
+
+            Arr.InfoAboutClass();
+            Console.WriteLine("Your finaly count of object(s): " + Arr.countOfObjects);
+            Arr.Border();*/
+            
+
+            int[] second_a = new int[] { 10, 20, -30, 40, 50 };
+            int[] third_a = new int[] { 100, 200, 300, -400, -500 };
+
+            Arr[] arr_arr = new Arr[3];
+            int i;
+
+            for (i = 0; i<arr_arr.Length; i++)
+            {
+                if (i == 0) {
+                    arr_arr[i] = new Arr();
+                    arr_arr[i].Info();
+                }
+                else if (i == 1) {
+                    arr_arr[i] = new Arr(second_a);
+                    arr_arr[i].Info();
+                }
+                else {
+                    arr_arr[i] = new Arr(third_a);
+                    arr_arr[i].Info();
+                }
+            }
+
+            // Сумма большая/меньшая ЯГОРЮЮЮЮЮЮ!!!!
+            int max = arr_arr[0].SummaBlyatZaebalo(), min = arr_arr[0].SummaBlyatZaebalo();
+
+            for (i=0; i<arr_arr.Length; i++)
+            {
+                if (arr_arr[i].SummaBlyatZaebalo() > max)
+                {
+                    max = arr_arr[i].SummaBlyatZaebalo();
+                }
+                if (arr_arr[i].SummaBlyatZaebalo() < min)
+                {
+                    min = arr_arr[i].SummaBlyatZaebalo();
+                }
+            }
+
+            Arr.Border();
+            Console.WriteLine("Max sum equal: " + max);
+            Console.WriteLine();
+            Console.WriteLine("Min sum equal: " + min);
+            Arr.Border();
+
+
+            for(i=0; i<arr_arr.Count(); i++)
+            {
+                arr_arr[i].SearchLoverElements();
+            }
+            Arr.Border();
+
+
+        }
+    }
+}
